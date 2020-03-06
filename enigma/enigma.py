@@ -4,8 +4,8 @@ __author__ = 'kasakun'
 __verison__ = '1.0'
 
 import random
-from rotor import Generator
-from rotor import RotorAscii
+from enigma.rotor import Generator
+from enigma.rotor import RotorAscii
 
 class Enigma:
     """Enigma"""
