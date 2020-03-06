@@ -3,7 +3,10 @@
 __author__ = 'kasakun'
 __verison__ = '1.0'
 
-ASCII = [x for x in range(128)]
+# Not all ascii code can be displayed
+# Printable ASCII: 32 - 126. Thus there is a bias as 30
+ASCII = [x for x in range(95)]
+ASCII_BIAS = 32
 
 import random
 
@@ -23,7 +26,7 @@ class Generator:
         return _res
 
     def get_ascii(self):
-        _list = [chr(x) for x in ASCII]
+        _list = [chr(x + 30) for x in ASCII]
         _res = []
 
         while len(_list) > 0:
@@ -69,6 +72,14 @@ class RotorAscii(Rotor):
         self._rotor = gen.get()
         self._base = 0
         self._size = len(self._rotor)
+
+    @staticmethod
+    def add_bias(num):
+        return num + ASCII_BIAS
+
+    @staticmethod
+    def remove_bias(num):
+        return num - ASCII_BIAS
 
 if __name__ == '__main__':
     pass

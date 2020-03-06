@@ -1,7 +1,7 @@
 # !/bin/Python3
 
 import random
-from enigma.rotor import RotorAscii, Generator
+from enigma.rotor import RotorAscii, Generator, ASCII
 import pytest
 
 class TestRotorAscii:
@@ -11,20 +11,19 @@ class TestRotorAscii:
         """
         rotor = RotorAscii()
 
-        for i in range(128):
+        for i in range(len(ASCII)):
             assert i in rotor.get()
 
     def test_rotor_ascii_size(self):
         rotor = RotorAscii()
 
-        # Hardcode 128 as the number of ascii
-        assert rotor.get_size() == 128
+        assert rotor.get_size() == len(ASCII)
         assert rotor.get_size() == len(rotor.get())
 
     def test_rotor_ascii_forward_backward(self):
         rotor = RotorAscii()
 
-        for plain in range(128):
+        for plain in range(len(ASCII)):
             ciphered = rotor.map_forward(plain)
 
             assert plain == rotor.map_backward(ciphered)
@@ -32,10 +31,10 @@ class TestRotorAscii:
     def test_rotor_ascii_rotate_map(self):
         rotor = RotorAscii()
 
-        for _ in range(random.randint(1, 142857)):
+        for _ in range(random.randint(100000, 142857)):
             rotor.rotate()
 
-        for plain in range(128):
+        for plain in range(len(ASCII)):
             ciphered = rotor.map_forward(plain)
             assert plain == rotor.map_backward(ciphered)
 

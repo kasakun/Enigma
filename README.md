@@ -2,6 +2,15 @@
 
 Encrypt machine.
 
+## How to use
+
+`virtualenv` is recommended. Use `requirements` to install required package.
+```
+pip3 install -r requirements.txt
+```
+
+See `demos` for examples.
+
 ## TODO
 
 ### Rotor
@@ -11,9 +20,10 @@ Encrypt machine.
 
 ### Enigma
 
-1. Support to encrypt a string.
+1. ~~Support to encrypt a string.~~
 2. Support random reflector generation.
 3. Expose a way to exchange the order of the rotors.
+4. Support '\n'.
 
 ### UI
 
@@ -21,7 +31,8 @@ Encrypt machine.
 
 ### Unit Test
 
-1. TBD
+1. Cover super long string case.
+2. Cover complex mulit rotations.
 
 ## Future
 

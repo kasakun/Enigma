@@ -1,25 +1,31 @@
 #!/usr/bin/python3
-"""Implementation of engima"""
+"""Example"""
 __author__ = 'kasakun'
 __verison__ = '1.0'
 
-TEXT = (""""Just remember that the things you put into your head are there forever,he said.\n"""
-        """You might want to think about that. You forget some things, dont you? Yes.\n"""
-        """You forget what you want to remember and you remember what you want to forget.\n"""
-        """                                                   – Cormac McCarthy, The Road""")
+import random
 
+TEXT = ("""To nanako: Meeting you was fate, """
+        """and falling in love with you was out of my control."""
+        """ Unfortunately, currently we do not support \\n now. QAQ""")
+
+from termcolor import colored
 from enigma.enigma import Enigma
 
 if __name__ == "__main__":
-    enigma = Enigma(4)
 
-    plain = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+    random.seed(142857)
 
+    # Create a 10-rotor enigma
+    enigma = Enigma(10)
 
-    print(f'The plain text: \n{plain}')
-    ciphered = enigma.encrypt(plain)
-    print('=================================================================')
-    print(f'The ciphered text: \n{ciphered}')
-    print('=================================================================')
-    enigma.reset()
-    print(f'The deciphered text: \n{enigma.encrypt(ciphered)}')
+    plain = TEXT
+    output = colored(plain, 'yellow')
+    print(f'The plain text: \n{output}')
+
+    secret = enigma.encrypt(plain)
+    output = colored(secret, 'blue')
+    print(f'The ciphered text: \n{output}')
+    deciphered = enigma.decrypt(secret)
+    output = colored(deciphered, 'green')
+    print(f'The deciphered text: \n{output}')

@@ -11,7 +11,7 @@ class TestEnigmaAscii:
 
         enigma = Enigma(3)
 
-        for i in range(128):
+        for i in range(32, 127):
             enigma.reset()
             plain = chr(i)
 
