@@ -44,7 +44,7 @@ class Rotor:
         return ret
 
     def map_backward(self, num):
-        ret = self._rotor.index(num) - self._base%self._size
+        ret = (self._rotor.index(num) + self._size - self._base)%self._size
         return ret
 
     def rotate(self):
@@ -71,11 +71,4 @@ class RotorAscii(Rotor):
         self._size = len(self._rotor)
 
 if __name__ == '__main__':
-    gen = Generator()
-
-    # seed shoul be the input
-    random.seed(100)
-
-    rotors = [gen.get_ascii() for i in range(0,3)]
-
-    print (rotors)
+    pass
