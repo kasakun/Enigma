@@ -15,8 +15,23 @@ class TestEnigmaAscii:
             enigma.reset()
             plain = chr(i)
 
-            ciphered = enigma.encrypt(plain)
+            ciphered = enigma.encrypt_char(plain)
             enigma.reset()
-            deciphered = enigma.encrypt(ciphered)
+            deciphered = enigma.encrypt_char(ciphered)
 
             assert plain == deciphered
+
+    def test_enigma_ascii_string(self):
+        """Encode/decode verification"""
+        random.seed(142857)
+        enigma = Enigma(12)
+
+        plain = 'I love nanako.'
+
+        ciphered = enigma.encrypt(plain)
+
+        enigma.reset()
+
+        deciphered = enigma.encrypt(ciphered)
+
+        assert deciphered == plain

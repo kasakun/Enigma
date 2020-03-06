@@ -22,7 +22,7 @@ class Enigma:
         # Hardcode here as the simple list, we can random it in future
         self._reflector = [abs(x - 127) for x in range(128)]
 
-    def encrypt(self, plain):
+    def encrypt_char(self, plain):
         """Encrypt a single char"""
         temp = ord(plain)
 
@@ -41,6 +41,11 @@ class Enigma:
 
         return chr(temp)
 
+    def encrypt(self, plain):
+        """Encrypt a string"""
+
+        return ''.join(map(self.encrypt_char, [x for x in plain]))
+
     def rotate(self):
         """
         Like a adder, each time we rotate 1 rotor and rotate the one next to it
@@ -56,7 +61,6 @@ class Enigma:
 
             self._counter[i] = 0
             i += 1
-
 
     def reset(self):
         """Reset all rotors"""
