@@ -11,6 +11,12 @@ pip3 install -r requirements.txt
 
 See `demos` for examples.
 
+Temporary solution to missing module
+
+```
+export PYTHONPATH=/your/path/to/Enigma
+```
+
 ## TODO
 
 ### Rotor
