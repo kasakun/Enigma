@@ -5,7 +5,10 @@ __verison__ = '1.0'
 
 # Not all ascii code can be displayed
 # Printable ASCII: 32 - 126. Thus there is a bias as 30
-ASCII = [x for x in range(95)]
+# Remap 0-94: 32-126
+#       95  : \n
+#       96  : \t
+ASCII = [x for x in range(97)]
 ASCII_BIAS = 32
 
 import random
@@ -62,7 +65,7 @@ class Rotor:
     def get_size(self):
         return self._size
 
-    def print(self):
+    def print_rotor(self):
         print(self._rotor)
 
 class RotorAscii(Rotor):
@@ -74,12 +77,21 @@ class RotorAscii(Rotor):
         self._size = len(self._rotor)
 
     @staticmethod
-    def add_bias(num):
-        return num + ASCII_BIAS
+    def preprocess(num):
+        """Method to convert a char to ascii array"""
+        if num == ord('\n'):
+            return 95
+        if num == ord('\t'):
+            return 96
+        return num - ASCII_BIAS
 
     @staticmethod
-    def remove_bias(num):
-        return num - ASCII_BIAS
+    def postprocess(num):
+        if num == 95:
+            return ord('\n')
+        if num == 96:
+            return ord('\t')
+        return num + ASCII_BIAS
 
 if __name__ == '__main__':
     pass

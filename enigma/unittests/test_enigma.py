@@ -21,12 +21,27 @@ class TestEnigmaAscii:
 
             assert plain == deciphered
 
-    def test_enigma_ascii_string(self):
+    def test_enigma_ascii_string_1(self):
         """Encode/decode verification"""
         random.seed(142857)
         enigma = Enigma(12)
 
         plain = 'I love nanako.'
+
+        ciphered = enigma.encrypt(plain)
+
+        enigma.reset()
+
+        deciphered = enigma.encrypt(ciphered)
+
+        assert deciphered == plain
+
+    def test_enigma_ascii_string_2(self):
+        """Encode/decode verification"""
+        random.seed(142857)
+        enigma = Enigma(200)
+
+        plain = 'I love nanako.\nThe first person I would like to see everyday is you.\tkasakun'
 
         ciphered = enigma.encrypt(plain)
 

@@ -25,7 +25,7 @@ class Enigma:
         """Encrypt a single char"""
         temp = ord(plain)
 
-        temp = RotorAscii.remove_bias(temp)
+        temp = RotorAscii.preprocess(temp)
 
         # forward
         for i in range(len(self._group)):
@@ -38,7 +38,7 @@ class Enigma:
         for i in range(len(self._group) - 1, -1, -1):
             temp = self._group[i].map_backward(temp)
 
-        temp = RotorAscii.add_bias(temp)
+        temp = RotorAscii.postprocess(temp)
 
         self.rotate()
 
