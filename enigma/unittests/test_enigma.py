@@ -42,7 +42,7 @@ class TestEnigmaAscii:
         random.seed(142857)
         enigma = Enigma(200)
 
-        plain = 'I love nanako.\nThe first person I would like to see everyday is you.\tkasakun'
+        plain = 'I love nanako.\nThe first person I would like to see everyday is you. kasakun'
 
         ciphered = enigma.encrypt(plain)
 

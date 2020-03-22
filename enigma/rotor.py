@@ -7,8 +7,8 @@ __verison__ = '1.0'
 # Printable ASCII: 32 - 126. Thus there is a bias as 30
 # Remap 0-94: 32-126
 #       95  : \n
-#       96  : \t
-ASCII = [x for x in range(97)]
+#       96  : \t #deprecated
+ASCII = [x for x in range(96)]
 ASCII_BIAS = 32
 
 import random
@@ -81,16 +81,16 @@ class RotorAscii(Rotor):
         """Method to convert a char to ascii array"""
         if num == ord('\n'):
             return 95
-        if num == ord('\t'):
-            return 96
+        #if num == ord('\t'):
+        #    return 96
         return num - ASCII_BIAS
 
     @staticmethod
     def postprocess(num):
         if num == 95:
             return ord('\n')
-        if num == 96:
-            return ord('\t')
+        #if num == 96:
+        #    return ord('\t')
         return num + ASCII_BIAS
 
 if __name__ == '__main__':
