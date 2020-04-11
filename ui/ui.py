@@ -29,7 +29,7 @@ class Runthread(QThread):
     def run(self):
         # Create a random size enigma
         random.seed(self.seed)
-        enigma = Enigma(random.randint(5, 15))
+        enigma = Enigma(random.randint(3, 5))
         output = enigma.encrypt(self.source)
 
         self.sig_finish_to_main.emit(output)

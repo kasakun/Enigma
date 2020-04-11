@@ -1,6 +1,6 @@
 # Enigma
 
-Encrypt machine.
+Encrypt machine supports English, Japanese, Chinese and Emoji.
 
 ## How to use
 
@@ -29,8 +29,8 @@ python3 ui.py
 
 ### Rotor
 
-1. Support Chinise rotor.
-2. Support Japanese rotor.
+1. ~~Support Chinise rotor.~~
+2. ~~Support Japanese rotor.~~
 
 ### Enigma
 
@@ -43,7 +43,7 @@ python3 ui.py
 
 1. ~~Create a UI to encode/decode.~~
 2. Create a button to save the input and output to a file.
-3. Create a loading alert, which needs an async call.
+3. ~~Create a loading alert, which needs an async call.~~
 
 ### Unit Test
 

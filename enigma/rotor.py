@@ -3,95 +3,101 @@
 __author__ = 'kasakun'
 __verison__ = '1.0'
 
-# Not all ascii code can be displayed
-# Printable ASCII: 32 - 126. Thus there is a bias as 30
-# Remap 0-94: 32-126
-#       95  : \n
-#       96  : \t #deprecated
-ASCII = [x for x in range(96)]
-ASCII_BIAS = 32
-
 import random
+import sys
 
-class Generator:
-    """Gnerate a random template for rotor"""
-    def __init__(self):
-        pass
+"""
+Unicode:
+Range: 0~sys.maxunicode
 
-    def get(self):
-        _list = ASCII.copy()
-        _res = []
+Unprintable unicode:
+u0000-u001f
+u007f-u009f
+- '\n' is considered as an exception
 
-        while len(_list) > 0:
-            index = random.randint(0, 127) % len(_list)
-            _res.append(_list.pop(index))
+Supported unicode:
+CJK symbols and puctuation
+Hirakana/Katakana
+Chinese
+Halfwidth and Fullwidth Forms
+Emoji+Symbol
 
-        return _res
-
-    def get_ascii(self):
-        _list = [chr(x + 30) for x in ASCII]
-        _res = []
-
-        while len(_list) > 0:
-            index = random.randint(0, 127) % len(_list)
-            _res.append(_list.pop(index))
-
-        return _res
+@see unicode-table.com
+"""
+UNICODE = [x for x in range(0x0020, 0x007f)] +\
+    [0x000a] +\
+    [x for x in range(0x3000, 0xa000)] +\
+    [x for x in range(0xff00, 0xfff0)] +\
+    [x for x in range(0x1f600, 0x1f6fa)]
+UNICODE_TO_INDEX = {x: UNICODE.index(x) for x in UNICODE}
 
 class Rotor:
-    """Generic Rotor"""
-    def __init__(self, rotor):
-        self._rotor = rotor
-        self._base = 0
-        self._size = len(self._rotor)
+    """Rotor"""
+    def __init__(self):
+        self.__rotor = self.generate()
+        self.__base = 0
+        self.__size = len(self.__rotor)
+
+    def generate(self):
+        """Generate a list of index."""
+        __list = [x for x in range(len(UNICODE))]
+        __res = []
+
+        while len(__list) > 0:
+            # generate a random index and append it to the rotor
+            index = random.randint(0, len(__list)) % len(__list)
+            __res.append(__list.pop(index))
+
+        return __res
 
     def map_forward(self, index):
-        ret = self._rotor[(index + self._base)%self._size]
+        """Map forward, output = r(input)."""
+        ret = self.__rotor[(index + self.__base)%self.__size]
         return ret
 
     def map_backward(self, num):
-        ret = (self._rotor.index(num) + self._size - self._base)%self._size
+        """Map backward, output = r'(input)."""
+        ret = (self.__rotor.index(num) + self.__size - self.__base)%self.__size
         return ret
 
     def rotate(self):
-        self._base = (self._base + 1)%self._size
+        """Rotate the rotor by 1."""
+        self.__base = (self.__base + 1)%self.__size
 
     def reset(self):
-        self._base = 0
+        """Reset the rotor to the init status."""
+        self.__base = 0
 
     def get(self):
-        return self._rotor
+        """Return the rotor list."""
+        return self.__rotor
 
     def get_size(self):
-        return self._size
+        """Return thr rotor size."""
+        return self.__size
 
-    def print_rotor(self):
-        print(self._rotor)
-
-class RotorAscii(Rotor):
-    """Ascii Rotor"""
-    def __init__(self):
-        gen = Generator()
-        self._rotor = gen.get()
-        self._base = 0
-        self._size = len(self._rotor)
+    def print__rotor(self):
+        """Print the rotor."""
+        print(self.__rotor)
 
     @staticmethod
-    def preprocess(num):
-        """Method to convert a char to ascii array"""
-        if num == ord('\n'):
-            return 95
-        #if num == ord('\t'):
-        #    return 96
-        return num - ASCII_BIAS
+    def preprocess(unicode_char):
+        """
+        Method to convert unicode char to index.
+        When a character enter the enigma, it is first preprocessed to convert
+        it to a encoded number(so called index). This number is mapped to
+        corresponding unicode. The reason is to put all supported unicode into a
+        continuous space which is easy to simulate the rotation and mapping.
+        """
+        return UNICODE_TO_INDEX[ord(unicode_char)]
 
     @staticmethod
-    def postprocess(num):
-        if num == 95:
-            return ord('\n')
-        #if num == 96:
-        #    return ord('\t')
-        return num + ASCII_BIAS
+    def postprocess(index_val):
+        """
+        @see preprocess
+        Method to convert index to a unicode character
+        """
+        return chr(UNICODE[index_val])
 
 if __name__ == '__main__':
     pass

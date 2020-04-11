@@ -5,8 +5,8 @@ import os
 from enigma.enigma import Enigma
 import pytest
 
-class TestEnigmaAscii:
-    def test_enigma_ascii_single_char(self):
+class TestEnigma:
+    def test_enigma_single_char(self):
         """Encode/decode verification"""
         random.seed(12)
 
@@ -22,7 +22,7 @@ class TestEnigmaAscii:
 
             assert plain == deciphered
 
-    def test_enigma_ascii_string_1(self):
+    def test_enigma_string_1(self):
         """Encode/decode verification"""
         random.seed(142857)
         enigma = Enigma(12)
@@ -37,7 +37,7 @@ class TestEnigmaAscii:
 
         assert deciphered == plain
 
-    def test_enigma_ascii_string_2(self):
+    def test_enigma_string_2(self):
         """Encode/decode verification"""
         random.seed(142857)
         enigma = Enigma(200)
@@ -52,10 +52,40 @@ class TestEnigmaAscii:
 
         assert deciphered == plain
 
-    def test_large_file_ascii(self):
+    def test_enigma_chinese(self):
         """Encode/decode verification"""
         random.seed(142857)
-        enigma = Enigma(15)
+        enigma = Enigma(5)
+
+        plain = '天气不错，一起去散步吧！'
+
+        ciphered = enigma.encrypt(plain)
+
+        enigma.reset()
+
+        deciphered = enigma.encrypt(ciphered)
+
+        assert deciphered == plain
+
+    def test_enigma_japanese(self):
+        """Encode/decode verification"""
+        random.seed(142857)
+        enigma = Enigma(5)
+
+        plain = '天気が良いから、散步しましょう。'
+
+        ciphered = enigma.encrypt(plain)
+
+        enigma.reset()
+
+        deciphered = enigma.encrypt(ciphered)
+
+        assert deciphered == plain
+
+    def test_large_file(self):
+        """Encode/decode verification"""
+        random.seed(142857)
+        enigma = Enigma(3)
 
         curr_path = os.path.dirname(__file__)
         with open(f'{curr_path}/test_large_file_ascii.txt', 'r') as f:
