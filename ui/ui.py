@@ -6,22 +6,71 @@ __verison__ = '1.0'
 import random
 import argparse
 import sys
-from PyQt5.QtWidgets import (QWidget, QLabel, QLineEdit, QPushButton,
-    QTextEdit, QGridLayout, QApplication)
-from PyQt5.QtCore import pyqtSlot
+import time
+from PyQt5.QtWidgets import (QWidget, QDialog, QLabel, QLineEdit, QPushButton,
+    QTextEdit, QGridLayout, QApplication, QProgressBar)
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QThread, Qt
 
 from enigma.enigma import Enigma
 
-class EngimaUI(QWidget):
+class Runthread(QThread):
+    """Work thread processing engima"""
+    sig_finish_to_main = pyqtSignal(str)
 
+    def __init__(self, seed, source):
+        super(Runthread, self).__init__()
+
+        self.seed = seed
+        self.source = source
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        # Create a random size enigma
+        random.seed(self.seed)
+        enigma = Enigma(random.randint(5, 15))
+        output = enigma.encrypt(self.source)
+
+        self.sig_finish_to_main.emit(output)
+
+class Loading(QDialog):
+    """
+    Loading window for processing engmia.
+    Cancel button to close the window and terminate the workload.
+    """
     def __init__(self):
         super().__init__()
 
-        self.initUI()
+        self.init_ui()
 
+    def init_ui(self):
+        self.button = QPushButton('Cancel')
+        self.button.clicked.connect(self.close)
 
-    def initUI(self):
+        self.pbar = QProgressBar(self)
+        self.pbar.setValue(0)
 
+        # Grid setting
+        grid = QGridLayout()
+        grid.setSpacing(10)
+
+        grid.addWidget(self.pbar, 0, 0, 1, 5)
+        grid.addWidget(self.button, 1, 2, 1, 1)
+
+        self.setLayout(grid)
+        self.setGeometry(300, 300, 400, 100)
+        self.setWindowTitle('Loading')
+        self.setWindowFlag(Qt.FramelessWindowHint)
+
+class EngimaUI(QWidget):
+    """Main window"""
+    def __init__(self):
+        super().__init__()
+
+        self.init_ui()
+
+    def init_ui(self):
         seed = QLabel('Seed')
         source = QLabel('Source')
         output = QLabel('Output')
@@ -32,7 +81,7 @@ class EngimaUI(QWidget):
         self.output_edit.setReadOnly(True)
 
         button = QPushButton('Start')
-        button.clicked.connect(self.on_click)
+        button.clicked.connect(self.create_thread_and_run)
 
         # Grid setting
         grid = QGridLayout()
@@ -56,13 +105,27 @@ class EngimaUI(QWidget):
         self.show()
 
     @pyqtSlot()
-    def on_click(self):
-        random.seed(self.seed_edit.text())
-        # Create a random size enigma
-        enigma = Enigma(random.randint(5, 15))
+    def create_thread_and_run(self):
+        # create thread and loading window
+        self.loading = Loading()
+        self.thread = Runthread(self.seed_edit.text(),
+            self.source_edit.toPlainText())
 
-        plain = self.source_edit.toPlainText()
-        output = enigma.encrypt(plain)
+        # cancel button to terminate the thread
+        self.loading.button.clicked.connect(self.thread.terminate)
+
+        # show/close the loading window when the thread start/end
+        self.thread.started.connect(self.loading.show)
+        self.thread.finished.connect(self.loading.close)
+
+        # print the result in the output when thread returns
+        self.thread.sig_finish_to_main.connect(self.print_result)
+
+        # start the thread
+        self.thread.start()
+
+    @pyqtSlot(str)
+    def print_result(self, output):
         self.output_edit.setPlainText(output)
 
 if __name__ == "__main__":
