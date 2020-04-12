@@ -48,15 +48,11 @@ class Loading(QDialog):
         self.button = QPushButton('Cancel')
         self.button.clicked.connect(self.close)
 
-        self.pbar = QProgressBar(self)
-        self.pbar.setValue(0)
-
         # Grid setting
         grid = QGridLayout()
         grid.setSpacing(10)
 
-        grid.addWidget(self.pbar, 0, 0, 1, 5)
-        grid.addWidget(self.button, 1, 2, 1, 1)
+        grid.addWidget(self.button, 0, 2, 1, 1)
 
         self.setLayout(grid)
         self.setGeometry(300, 300, 400, 100)

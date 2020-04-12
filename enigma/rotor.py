@@ -18,6 +18,7 @@ u007f-u009f
 Supported unicode:
 CJK symbols and puctuation
 Hirakana/Katakana
+Hangul
 Chinese
 Halfwidth and Fullwidth Forms
 Emoji+Symbol
@@ -52,13 +53,13 @@ class Rotor:
 
     def map_forward(self, index):
         """Map forward, output = r(input)."""
-        ret = self.__rotor[(index + self.__base)%self.__size]
-        return ret
+        __ret = self.__rotor[(index + self.__base)%self.__size]
+        return __ret
 
     def map_backward(self, num):
         """Map backward, output = r'(input)."""
-        ret = (self.__rotor.index(num) + self.__size - self.__base)%self.__size
-        return ret
+        __ret = (self.__rotor.index(num) + self.__size - self.__base)%self.__size
+        return __ret
 
     def rotate(self):
         """Rotate the rotor by 1."""

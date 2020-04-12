@@ -1,6 +1,6 @@
 # Enigma
 
-Encrypt machine supports English, Japanese, Chinese and Emoji.
+Encrypt machine supports English, Japanese, Chinese, Hangul and Emoji.
 
 ## How to use
 
