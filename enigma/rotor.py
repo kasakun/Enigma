@@ -42,14 +42,18 @@ class Rotor:
     def generate(self):
         """Generate a list of index."""
         __list = [x for x in range(len(UNICODE))]
-        __res = []
 
-        while len(__list) > 0:
-            # generate a random index and append it to the rotor
-            index = random.randint(0, len(__list)) % len(__list)
-            __res.append(__list.pop(index))
+        index = len(__list) - 1;
 
-        return __res
+        # shuffle
+        while index >0:
+            random_index = random.randint(0, index) #inlusive
+            temp = __list[random_index]
+            __list[random_index] = __list[index]
+            __list[index] = temp
+            index -= 1
+
+        return __list
 
     def map_forward(self, index):
         """Map forward, output = r(input)."""
